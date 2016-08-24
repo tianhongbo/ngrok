@@ -73,9 +73,13 @@ func Listen(addr, typ string, tlsCfg *tls.Config) (l *Listener, err error) {
 			}
 
 			c := wrapConn(rawConn, typ)
-			if tlsCfg != nil {
-				c.Conn = tls.Server(c.Conn, tlsCfg)
-			}
+
+			/*
+			 * disable server https
+			 */
+			//if tlsCfg != nil {
+			//	c.Conn = tls.Server(c.Conn, tlsCfg)
+			//}
 			c.Info("New connection from %v", c.RemoteAddr())
 			l.Conns <- c
 		}
@@ -96,9 +100,12 @@ func Dial(addr, typ string, tlsCfg *tls.Config) (conn *loggedConn, err error) {
 	conn = wrapConn(rawConn, typ)
 	conn.Debug("New connection to: %v", rawConn.RemoteAddr())
 
-	if tlsCfg != nil {
-		conn.StartTLS(tlsCfg)
-	}
+	/*
+	 * disable client https
+	 */
+	//if tlsCfg != nil {
+	//	conn.StartTLS(tlsCfg)
+	//}
 
 	return
 }
